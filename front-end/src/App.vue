@@ -21,9 +21,12 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #FEFEFE;
+  color: #19181F;
   margin-top: 60px;
   background-color: #19181F;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
 }
 
 body {

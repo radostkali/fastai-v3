@@ -248,7 +248,7 @@ export default {
               if (response.result === true) {
                 this.editImage = true
                 this.responseMsg = 'Crop out or blur the regions that could reveal identity'
-                this.responseMsgColor = '#FEFEFE'
+                this.responseMsgColor = '#19181F'
                 this.mode = 'crop'
               } else {
                 this.responseMsg = 'No identity detected'
@@ -280,13 +280,15 @@ export default {
     padding: 10px 50px;
     text-align: center;
     font-size: 14px;
+    background-color: #e0e0e0;
+    border-radius: 0.3rem;
 }
 
 .title {
     font-size: 30px;
     margin-top: 1em;
     margin-bottom: 1em;
-    color: #FEFEFE;
+    color: #19181F;
 }
 
 .content {
@@ -295,7 +297,7 @@ export default {
 
 .analyze {
     margin-top: 1em;
-    margin-bottom: 5em;
+    margin-bottom: 2em;
 }
 
 .upload-label {
@@ -318,7 +320,7 @@ button.choose-file-button {
     width: 200px;
     height: 40px;
     border-radius: 2px;
-    background-color: #19181F;
+    background-color: #e0e0e0;
     border: solid 1px #6E39E8;
     font-size: 1.rem;
     color: #6E39E8;
@@ -352,9 +354,9 @@ button.apply-button {
   margin-top: 0.5rem;
   width: 130px;
   height: 30px;
-  border: solid 1px #d1d1d1;
+  border: solid 1px #b8b8b8;
   border-radius: 10px;
-  background-color: #d1d1d1;
+  background-color: #b8b8b8;
   font-size: 0.9rem;
   color: #19181F;
   cursor: pointer;
@@ -365,9 +367,9 @@ button.clean-button {
   margin-left: 0.5rem;
   width: 90px;
   height: 30px;
-  border: solid 1px #d1d1d1;
+  border: solid 1px #b8b8b8;
   border-radius: 10px;
-  background-color: #d1d1d1;
+  background-color: #b8b8b8;
   font-size: 0.9rem;
   color: #19181F;
   cursor: pointer;
