@@ -50,8 +50,8 @@
           </div>
         </div>
         <div class="tool-bar">
-          <img class="tool" src="@/assets/crop.png" alt="crop" title="Crop image" height="30" @click="mode = 'crop'">
-          <img class="tool" src="@/assets/blur.png" alt="blur" title="Blur image" height="30" @click="modeBlur()">
+          <img class="tool" src="@/assets/crop.png" alt="crop" title="Crop image" height="23" @click="mode = 'crop'">
+          <img class="tool" src="@/assets/blur.png" alt="blur" title="Blur image" height="23" @click="modeBlur()">
         </div>
       </div>
 
@@ -211,7 +211,7 @@ export default {
                 this.editImage = false
               } else {
                 this.responseMsg = 'No identity detected'
-                this.responseMsgColor = '#5ccb52'
+                this.responseMsgColor = '#58B0F8'
                 this.editImage = false
               }
               this.resubmitBtnTitle = 'Resubmit'
@@ -248,11 +248,11 @@ export default {
               if (response.result === true) {
                 this.editImage = true
                 this.responseMsg = 'Crop out or blur the regions that could reveal identity'
-                this.responseMsgColor = '#262626'
+                this.responseMsgColor = '#FEFEFE'
                 this.mode = 'crop'
               } else {
                 this.responseMsg = 'No identity detected'
-                this.responseMsgColor = '#5ccb52'
+                this.responseMsgColor = '#58B0F8'
                 this.editImage = false
               }
               this.analyzeBtnTitle = 'Analyze'
@@ -270,9 +270,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-body {
-    background-color: #fff;
-}
 
 .no-display {
     display: none;
@@ -289,7 +286,7 @@ body {
     font-size: 30px;
     margin-top: 1em;
     margin-bottom: 1em;
-    color: #262626;
+    color: #FEFEFE;
 }
 
 .content {
@@ -321,32 +318,33 @@ button.choose-file-button {
     width: 200px;
     height: 40px;
     border-radius: 2px;
-    background-color: #ffffff;
-    border: solid 1px #7052CB;
-    font-size: 13px;
-    color: #7052CB;
+    background-color: #19181F;
+    border: solid 1px #6E39E8;
+    font-size: 1.rem;
+    color: #6E39E8;
     cursor: pointer;
+    font-weight: bold;
 }
 
 button.analyze-button {
     width: 200px;
     height: 40px;
-    border: solid 1px #7052CB;
+    border: solid 1px #6E39E8;
     border-radius: 2px;
-    background-color: #7052CB;
-    font-size: 13px;
-    color: #ffffff;
+    background-color: #6E39E8;
+    font-size: 1.rem;
+    color: #FEFEFE;
     cursor: pointer;
 }
 
 button.resubmit-button {
     width: 200px;
     height: 40px;
-    border: solid 1px #5ccb52;
+    border: solid 1px #58B0F8;
     border-radius: 2px;
-    background-color: #5ccb52;
-    font-size: 13px;
-    color: #ffffff;
+    background-color: #58B0F8;
+    font-size: 1.rem;
+    color: #FEFEFE;
     cursor: pointer;
 }
 
@@ -358,7 +356,7 @@ button.apply-button {
   border-radius: 10px;
   background-color: #d1d1d1;
   font-size: 0.9rem;
-  color: #686868;
+  color: #19181F;
   cursor: pointer;
 }
 
@@ -371,7 +369,7 @@ button.clean-button {
   border-radius: 10px;
   background-color: #d1d1d1;
   font-size: 0.9rem;
-  color: #686868;
+  color: #19181F;
   cursor: pointer;
 }
 
@@ -394,6 +392,9 @@ button:focus {
   margin-left: 10px;
   margin-bottom: 10px;
   cursor: pointer;
+  background-color: #d1d1d1;
+  padding: 0.2rem;
+  border-radius: 0.2rem;
 }
 
 .tmp-canvas {
