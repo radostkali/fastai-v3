@@ -31,18 +31,27 @@
             @change="crop"
           ></cropper>
           <div :style="mode === 'blur' ? 'display: block' : 'display: none'">
-            <canvas ref="mainCanvas" width=300 height=300 @mousedown="handleMouseDown"></canvas>
-            <canvas ref="tempCanvas" width=300 height=300 class="tmp-canvas"></canvas>
+            <canvas 
+              ref="mainCanvas" 
+              width=300 
+              height=300 
+              @mousedown="handleMouseDown"
+              @mousemove="handleMouseMove"
+              @mouseup="handleMouseUp"></canvas>
+            <canvas id='tempCanvas' ref="tempCanvas" width=300 height=300 class="tmp-canvas"></canvas>
           </div>
           <div class="apply-edit">
-            <button v-if="editImage" class='apply-button' type='button' @click="apply">
+            <button class='apply-button' type='button' @click="apply">
               {{ mode === 'crop' ? 'Apply cropping' : 'Apply blurring' }}
+            </button>
+            <button v-if="mode === 'blur'" class='clean-button' type='button' @click="clearBlur">
+              Clean
             </button>
           </div>
         </div>
         <div class="tool-bar">
           <img class="tool" src="@/assets/crop.png" alt="crop" title="Crop image" height="30" @click="mode = 'crop'">
-          <img class="tool" src="@/assets/blur.png" alt="blur" title="Blur image" height="30" @click="modeBlur">
+          <img class="tool" src="@/assets/blur.png" alt="blur" title="Blur image" height="30" @click="modeBlur()">
         </div>
       </div>
 
@@ -86,14 +95,20 @@ export default {
       if (this.mode === 'crop') {
         this.pickedImage = dataURLtoBlob(this.cropedImage)
         this.imageUrl = URL.createObjectURL(this.pickedImage)
+      } else {
+        this.pickedImage = dataURLtoBlob(this.canvas.toDataURL())
+        this.imageUrl = URL.createObjectURL(this.pickedImage)
       }
     },
-    modeBlur () {
+    clearBlur () {
+      this.modeBlur()
+    },
+    modeBlur (image=null) {
       this.mode = 'blur'
       
       this.img = new window.Image()
       this.img.crossOrigin = "anonymous"
-      this.img.src = this.imageUrl
+      this.img.src = image === null ? this.imageUrl : image
 
       this.img.onload = () => {
         this.canvas = this.$refs.mainCanvas
@@ -101,17 +116,13 @@ export default {
         this.tempCtx = this.tempCanvas.getContext("2d")
         this.ctx = this.canvas.getContext("2d")
 
-        let width = this.img.width * (400 / this.img.height)
-        this.canvas.width = this.tempCanvas.width = width
+        this.width = this.img.width * (400 / this.img.height)
+        this.canvas.width = this.tempCanvas.width = this.width
         this.canvas.height = this.tempCanvas.height = 400
-        this.ctx.drawImage(this.img, 0, 0, width, 400)
+        this.ctx.drawImage(this.img, 0, 0, this.width, 400)
 
-        // let offsetX = canvas.offsetLeft;
-        // let offsetY = canvas.offsetTop;
-        // let scrollX = canvas.scrollLeft;
-        // let scrollY = canvas.scrollTop;
         this.isDown = false;
-        // let PI2 = Math.PI * 2;
+        this.PI2 = Math.PI * 2;
       }
     },
     handleMouseDown (e) {
@@ -120,21 +131,41 @@ export default {
       this.tempCtx.clearRect(0, 0, this.tempCanvas.width, this.tempCanvas.height);
       this.isDown = true;
     },
+    handleMouseMove(e) {
+      if (!this.isDown) {
+          return
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      let offsetX = this.canvas.getBoundingClientRect().left;
+      let offsetY = this.canvas.getBoundingClientRect().top;
+      let mouseX = parseInt(e.clientX - offsetX);
+      let mouseY = parseInt(e.clientY - offsetY);
+      this.ctx.beginPath();
+      this.ctx.arc(mouseX, mouseY, 20, 0, this.PI2);
+      this.ctx.closePath();
+      this.ctx.fill();
+      this.tempCtx.beginPath();
+      this.tempCtx.arc(mouseX, mouseY, 20, 0, this.PI2);
+      this.tempCtx.closePath();
+      this.tempCtx.fill();
+    },
     handleMouseUp(e) {
       e.preventDefault();
       e.stopPropagation();
       this.isDown = false;
       this.tempCtx.save();
       this.tempCtx.globalCompositeOperation = "source-in";
-      this.tempCtx.drawImage(this.img, 0, 0);
+      this.tempCtx.drawImage(this.img, 0, 0, this.width, 400);
       this.tempCtx.restore();
       boxBlurCanvasRGBA("tempCanvas", 0, 0, this.tempCanvas.width, this.tempCanvas.height, 4, 0);
       this.ctx.save();
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.drawImage(this.tempCanvas, 0, 0);
+      this.ctx.drawImage(this.tempCanvas, 0, 0, this.width, 400);
       this.ctx.globalCompositeOperation = "destination-over";
-      this.ctx.drawImage(this.img, 0, 0);
+      this.ctx.drawImage(this.img, 0, 0, this.width, 400);
       this.ctx.restore();
+      this.modeBlur(this.canvas.toDataURL())
     },
     crop({coordinates, canvas}) {
       this.cropedImage = canvas.toDataURL()
@@ -322,6 +353,19 @@ button.resubmit-button {
 button.apply-button {
   margin-top: 0.5rem;
   width: 130px;
+  height: 30px;
+  border: solid 1px #d1d1d1;
+  border-radius: 10px;
+  background-color: #d1d1d1;
+  font-size: 0.9rem;
+  color: #686868;
+  cursor: pointer;
+}
+
+button.clean-button {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+  width: 90px;
   height: 30px;
   border: solid 1px #d1d1d1;
   border-radius: 10px;
