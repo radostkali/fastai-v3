@@ -158,7 +158,7 @@ export default {
       this.tempCtx.globalCompositeOperation = "source-in";
       this.tempCtx.drawImage(this.img, 0, 0, this.width, 400);
       this.tempCtx.restore();
-      boxBlurCanvasRGBA("tempCanvas", 0, 0, this.tempCanvas.width, this.tempCanvas.height, 4, 0);
+      boxBlurCanvasRGBA("tempCanvas", 0, 0, this.tempCanvas.width, this.tempCanvas.height, 15, 0);
       this.ctx.save();
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.drawImage(this.tempCanvas, 0, 0, this.width, 400);
