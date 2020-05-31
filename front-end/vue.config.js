@@ -7,6 +7,6 @@ module.exports = {
           },
         },
       },
-      outputDir: '../dist',
+      outputDir: '../app/dist',
       assetsDir: 'static',
   }
